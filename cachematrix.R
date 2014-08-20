@@ -7,17 +7,17 @@
 
 makeCacheMatrix <- function(x = matrix()) {
   
-  m_inv <- NULL
+  m_inv <- NULL      # initialize the inverse to NULL
   
-  set <- function(y) {
+  set <- function(y) {    
     x <<- y 
     m_inv <<- NULL
   }
   
-  get <- function() x
-  setinvmat <- function(inv_mat) m_inv <<- inv_mat # assign a value to an object in an environment 
+  get <- function() x  # reads original matrix
+  setinvmat <- function(inv_mat) m_inv <<- inv_mat # assign a value to inverse matrix in an environment 
                                        # that is different from the current environment
-  getinvmat <- function() m_inv
+  getinvmat <- function() m_inv   # reads the inverse of makeCahceMatrix object
   
   # returned list of attributes
   list(set = set, 
@@ -28,22 +28,21 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## This function calculates the inverse of makeCacheMatrix
-## only if inverse matrix does not exist, otherwise it gets cached data
 
 cacheSolve <- function(x, ...) {
+  ## This function calculates the inverse of makeCacheMatrix
+  ## only if inverse matrix does not exist, otherwise it gets cached data
   
-        ## Return a matrix that is the inverse of 'x'
-  m <- x$getinvmat()
+  m <- x$getinvmat()   # gets invers matrix
   
-  if(!is.null(m)) {
+  if(!is.null(m)) {   # check if inverse is already cached
     message("getting cached data")
     return(m)
   }
   
-  original_mat <- x$get()
+  original_mat <- x$get()   # calulates inverse matricìx if it is not cached
   m <- solve(original_mat)
-  x$setinvmat(m)
+  x$setinvmat(m)    # assign calulcated inverse matrix ti makeCacheMatrix object
   
-  m
+  m               # return inverse matrix
 }
